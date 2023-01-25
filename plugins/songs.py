@@ -1,7 +1,11 @@
-# Powered By @BikashHalder @AdityaHalder
-# ©️ Copy Right By Bikash Halder Or Aditya Halder
-# Any Problem To Report @Bgt_Chat or @AdityaDiscus
-# Bot Owner @BikashHalder Or @AdityaHalder
+#
+# Copyright (C) 2021-2022 by TeamYukki@Github, < https://github.com/TeamYukki >.
+#
+# This file is part of < https://github.com/TeamYukki/YukkiMusicBot > project,
+# and is released under the "GNU v3.0 License Agreement".
+# Please see < https://github.com/TeamYukki/YukkiMusicBot/blob/master/LICENSE >
+#
+# All rights reserved.
 
 import os
 import re
@@ -13,16 +17,18 @@ from pyrogram.types import (InlineKeyboardButton,
                             InlineKeyboardMarkup, InputMediaAudio,
                             InputMediaVideo, Message)
 
-from Bikash.config import (BANNED_USERS, SONG_DOWNLOAD_DURATION,
+from config import (BANNED_USERS, SONG_DOWNLOAD_DURATION,
                     SONG_DOWNLOAD_DURATION_LIMIT)
-from Bikash.strings import get_command
-from Bikash import YouTube, app
-from Bikash.utils.decorators.language import language, languageCB
-from Bikash.utils.formatters import convert_bytes
-from Bikash.utils.inline.song import song_markup
+from strings import get_command
+from YukkiMusic import YouTube, app
+from YukkiMusic.utils.decorators.language import language, languageCB
+from YukkiMusic.utils.formatters import convert_bytes
+from YukkiMusic.utils.inline.song import song_markup
 
 # Command
 SONG_COMMAND = get_command("SONG_COMMAND")
+
+# Song Module
 
 
 @app.on_message(
@@ -33,30 +39,6 @@ SONG_COMMAND = get_command("SONG_COMMAND")
 )
 @language
 async def song_commad_group(client, message: Message, _):
-    upl = InlineKeyboardMarkup(
-        [
-            [
-                InlineKeyboardButton(
-                    text=_["SG_B_1"],
-                    url=f"https://t.me/{app.username}?start=song",
-                ),
-            ]
-        ]
-    )
-    await message.reply_text(_["song_1"], reply_markup=upl)
-
-
-# Song Module
-
-
-@app.on_message(
-    filters.command(SONG_COMMAND)
-    & filters.private
-    & ~filters.edited
-    & ~BANNED_USERS
-)
-@language
-async def song_commad_private(client, message: Message, _):
     await message.delete()
     url = await YouTube.url(message)
     if url:
@@ -189,6 +171,7 @@ async def song_helper_cb(client, CallbackQuery, _):
             print(e)
             return await CallbackQuery.edit_message_text(_["song_7"])
         keyboard = InlineKeyboard()
+        # AVC Formats Only [ YUKKI MUSIC BOT ]
         done = [160, 133, 134, 135, 136, 137, 298, 299, 264, 304, 266]
         for x in formats_available:
             check = x["format"]
@@ -228,7 +211,7 @@ async def song_helper_cb(client, CallbackQuery, _):
 @languageCB
 async def song_download_cb(client, CallbackQuery, _):
     try:
-        await CallbackQuery.answer("ᴅᴏᴡɴʟᴏᴀᴅɪɴɢ...")
+        await CallbackQuery.answer("Downloading")
     except:
         pass
     callback_data = CallbackQuery.data.strip()
